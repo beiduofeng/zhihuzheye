@@ -1,0 +1,35 @@
+<template>
+    <div class="row">
+        <div v-for="column in list" :key="column.id" class="col-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body" style="text-align: center;">
+                    <img :src="column.avatar" :alt="column.title" class="card-img-tc">
+                    <h5 class="card-title">{{ column.title }}</h5>
+                    <p class="card-text">{{ column.description }}</p>
+                    <a href="#" class="btn btn-primary">进入专栏</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, type PropType } from 'vue'
+import 'bootstrap/dist/css/bootstrap-grid.min.css';
+export interface ColumnProps {
+    id: number;
+    title: string;
+    avatar: string;
+    description: string;
+}
+export default defineComponent({
+    name: 'ColumnList',
+    props: {
+        list: {
+            type: Array as PropType<ColumnProps[]>,
+            required: true
+
+        }
+    }
+})
+</script>
