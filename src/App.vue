@@ -1,6 +1,8 @@
 <template>
   <div class="container">
+    <global-header :user="currentUser"></global-header>
     <column-list :list="list"></column-list>
+
   </div>
 </template>
 
@@ -8,11 +10,11 @@
 import { defineComponent } from 'vue';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import ColumnList, { type ColumnProps } from './components/ColumnList.vue';
-
+import GlobalHeader, { type UserProops } from './components/GlobalHeader.vue';
 const testData: ColumnProps[] = [
   {
     id: 1,
-    title: 'test1的专栏',
+    title: '铺先生',
     description: '这是test1的专栏，可以更新一下哦',
     avatar: ''
   },
@@ -25,8 +27,8 @@ const testData: ColumnProps[] = [
   {
     id: 2,
     title: 'test3的专栏',
-    description: '这是test1的专栏，可以更新一下哦',
-    avatar: ''
+    description: '这是test1的专栏，可以更新一下哦'
+    //avatar: ''
   },
   {
     id: 2,
@@ -37,10 +39,11 @@ const testData: ColumnProps[] = [
 ]
 export default defineComponent({
   name: 'App',
-  components: { ColumnList },
+  components: { ColumnList, GlobalHeader },
   setup() {
     return {
-      list: testData
+      list: testData,
+      currentUser,
     }
   }
 
