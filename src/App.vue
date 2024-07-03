@@ -11,6 +11,12 @@ import { defineComponent } from 'vue';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import ColumnList, { type ColumnProps } from './components/ColumnList.vue';
 import GlobalHeader, { type UserProops } from './components/GlobalHeader.vue';
+const currentUser: UserProops = {
+  column: 1
+  nickName: sun,
+  isLogin: true,
+}
+  ,
 const testData: ColumnProps[] = [
   {
     id: 1,
