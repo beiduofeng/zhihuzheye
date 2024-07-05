@@ -1,16 +1,16 @@
 <template>
     <div class="validate-input-container pb-3">
-        <input v-if="tag !== 'textarea'" class="form-control" :class="{ 'is-invalid': inputRef.error }"
-            @blur="validateInput" v-model="inputRef.val" v-bind="$attrs">
-        <textarea v-else class="form-control" :class="{ 'is-invalid': inputRef.error }" @blur="validateInput"
-            v-model="inputRef.val" v-bind="$attrs">
-    </textarea>
+        <input class="form-control" :class="{ 'is-invalid': inputRef.error }" @blur="validateInput"
+            :value="inputRef.val" @input="updateValue" v-bind="$attrs">
+
         <span v-if="inputRef.error" class="invalid-feedback">{{ inputRef.message }}</span>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, PropType, onMounted, computed } from 'vue'
+import { emit } from 'process';
+//import { emitter } from '@/components/ValidateForm.vue'
+import { defineComponent, reactive, type PropType, onMounted, computed } from 'vue'
 import { emitter } from './ValidateForm.vue'
 const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 interface RuleProp {
@@ -29,7 +29,7 @@ export default defineComponent({
             default: 'input'
         }
     },
-    inheritAttrs: false,
+    inheritAttrs: false,   //禁用Attribute继承
     setup(props, context) {
         const inputRef = reactive({
             val: computed({
@@ -41,6 +41,11 @@ export default defineComponent({
             error: false,
             message: ''
         })
+        const updateValue = (e: KeyboardEvent) => {
+            const targetValue = (e.target as HTMLInputElement).value
+            inputRef.val = targetValue
+            context.emit('update:modelValue', targetValue)
+        }
         const validateInput = () => {
             if (props.rules) {
                 const allPassed = props.rules.every(rule => {
@@ -52,9 +57,6 @@ export default defineComponent({
                             break
                         case 'email':
                             passed = emailReg.test(inputRef.val)
-                            break
-                        case 'custom':
-                            passed = rule.validator ? rule.validator() : true
                             break
                         default:
                             break
@@ -71,7 +73,8 @@ export default defineComponent({
         })
         return {
             inputRef,
-            validateInput
+            validateInput,
+            updateValue
         }
     }
 })
